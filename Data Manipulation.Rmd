@@ -1,0 +1,114 @@
+---
+title: "Data_manipulation"
+author: "Priyal"
+date: "9/20/2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+```
+
+###Import FAS csv files
+
+Import my first csv (FAS_litters)
+
+```{r}
+litters_data = read_csv(file = "./data/FAS_litters.csv")
+litters_data = janitor::clean_names(litters_data)
+pups_data = read_csv(file = "./data/FAS_pups.csv")
+pups_data = janitor::clean_names(pups_data)
+```
+
+
+#Select variables
+
+```{r}
+select(litters_data,group, litter_number, gd0_weight)
+
+select(litters_data, litter_number, gd0_weight, pups_survive)
+```
+
+..by range
+
+```{r}
+select(litters_data, gd_of_birth:pups_survive)
+select(litters_data, group, gd_of_birth:pups_survive)
+```
+
+... saying what you want to remove
+
+```{r}
+select(litters_data, -litter_number)
+```
+
+
+
+```{r}
+select(litters_data, group, litter_number, gest_day_0_weight = gd0_weight)
+rename(litters_data, gest_day_0_weight = gd0_weight)
+```
+
+
+...use select helpers:
+
+```{r}
+select(litters_data, starts_with("gd"))
+select(litters_data, litter_number, starts_with("pup"))
+
+select(litters_data, litter_number, everything())
+```
+
+Learning Assessment
+
+```{r}
+select(pups_data, litter_number, sex, pd_ears)
+```
+
+## Filter observations
+
+Do some filtering 
+
+```{r}
+filter(litters_data, gd0_weight < 25)
+filter(litters_data, gd0_weight >= 25)
+
+filter(litters_data, pups_born_alive == 8)
+filter(litters_data, !is.na(gd0_weight))
+
+filter(litters_data, group %in% c("Low7,'Low8"))
+
+```
+
+
+```{r}
+filter(pups_data, sex == 1 )
+filter(pups_data, sex == 2, pd_walk < 11 )
+```
+
+## Mutate
+
+Create variables
+
+```{r}
+mutate(litters_data,
+  wt_gain = gd18_weight - gd0_weight,
+  group = tolower(group)
+)
+
+mutate(litters_data,
+  wt_gain = gd18_weight - gd0_weight,
+  wt_gain_squared = wt_gain^2
+)
+```
+
+## Arrange
+
+Putting your data in new order
+
+```{r}
+arrange(litters_data, gd0_weight)
+arrange(litters_data, desc(pups_born_alive), gd0_weight)
+```
+
