@@ -5,7 +5,7 @@ date: "9/18/2018"
 output: html_document
 ---
 
-```{r setup, include=FALSE}
+```{r setup, include=FALSE
 knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
 ```
@@ -21,6 +21,7 @@ litters_data = janitor::clean_names(litters_data)
 ```
 
 Learning Assessment: Importing pups data
+
 ```{r}
 pups_data = read_csv(file = "./data/FAS_pups.csv")
 ```
@@ -39,7 +40,27 @@ Skip some rows
 
 ```{r}
 litters_data = read_csv(file = "./data/FAS_litters.csv",
-  skip = 10, col_names = FALSE)li
+  skip = 10, col_names = FALSE)
+```
+
+###Parsing columns
+
+```{r}
+litters_data = read_csv(file = "./data/FAS_litters.csv",
+  col_types = cols(
+    Group = col_character(),
+    `Litter Number` = col_character(),
+    `GD0 weight` = col_double(),
+    `GD18 weight` = col_double(),
+    `GD of Birth` = col_integer(),
+    `Pups born alive` = col_integer(),
+    `Pups dead @ birth` = col_integer(),
+    `Pups survive` = col_integer()
+  )
+)
+litters_data = read_csv(file = "./data/FAS_litters.csv",
+              col_types = "ccddiiii"
+)
 ```
 
 Look at pups data
@@ -55,18 +76,34 @@ pups_data = janitor::clean_names(pups_data)
 skimr::skim(pups_data)
 ```
 
+To read in csv we used read_csv (file = "relative path.csv")
+
 ### Other formats
 
 Read in mlb data
 
 ```{r}
-mlb_data = readxl::read_excel(path = "./data/mlb11.xlsx", 
-                              range = "A1:E17")
+library(readxl)
+mlb_data = read_excel(path = "./data/mlb11.xlsx")
 ```
+For excel we are using path = or simply read_excel(relative path.xlsx)
 
-Read in pulse data:
+Read in data from SAS, Stata and SPSS:
 
 ```{r}
 pulse_data = haven::read_sas("./data/public_pulse_data.sas7bdat")
 ```
+
+Either first load the whole package with library(haven) or to use a specific function haven::read_sas
+
+Importing Fas_pups using read.csv
+```{r}
+pups_base = read.csv("./data/fas_pups.csv")
+pups_readr = read_csv(file = "./data/fas_pups.csv")
+pups_readr = janitor::clean_names(pups_data1)
+
+pups_base$s
+pups_readr$S
+```
+
 
