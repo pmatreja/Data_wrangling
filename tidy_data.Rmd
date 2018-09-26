@@ -149,3 +149,29 @@ Create joined data
 FAS_data = left_join(pup_data, litter_data, by = "litter_number")
 ```
 
+Learning Assessment 2
+
+```{r}
+survey_os = read_csv("./data/survey_results/surv_os.csv", col_types = "cc") %>%
+  janitor::clean_names() %>% 
+  rename(id = what_is_your_uni, os =  what_operating_system_do_you_use)
+  
+survey_git = read_csv("./data/survey_results/surv_program_git.csv", col_types = "ccc") %>%
+  janitor::clean_names() %>% 
+  rename(id = what_is_your_uni, 
+         prog = what_is_your_degree_program,
+         git_exp = which_most_accurately_describes_your_experience_with_git)
+
+```
+
+Joining the data sets
+
+```{r}
+Left_join = left_join(survey_os, survey_git)
+Inner_join = inner_join(survey_os, survey_git)
+anti_join1 = anti_join(survey_os, survey_git)
+anti_join2 = anti_join(survey_git, survey_os)
+```
+
+
+
